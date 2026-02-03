@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -374,7 +376,9 @@
 
         textarea {
             resize: vertical;
-            min-height: 120px;
+            min-height: 150px;
+            max-height: none;
+            overflow-y: auto;
         }
 
         select {
@@ -610,6 +614,17 @@
 
     <script>
         let contadorDesembolsos = 0;
+
+        // Auto-expandir textarea de observaciones
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.getElementById('observaciones');
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+            }
+        });
 
         function formatearMoneda(input) {
             let value = input.value.replace(/[^\d.]/g, '');
