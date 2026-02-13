@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -896,9 +897,34 @@
                 // Observaciones
                 const obs = document.getElementById('observaciones').value;
                 if (obs && obs.trim() !== '') {
-                    agregarTabla('VII. OBSERVACIONES', [
-                        { label: 'Notas', value: obs.substring(0, 120) + (obs.length > 120 ? '...' : '') }
-                    ]);
+                    // Ajustar el texto al ancho del cuadro y respetar saltos de línea
+                    const maxWidth = pageWidth - (margin * 2) - 30;
+                    // Reemplazar saltos de línea por \n para splitTextToSize
+                    const obsText = obs.replace(/\r?\n/g, '\n');
+                    const obsWrapped = doc.splitTextToSize(obsText, maxWidth);
+                    // Calcular altura dinámica
+                    const obsHeight = 6 + (obsWrapped.length * 5) + 2;
+                    // Dibujar cuadro de observaciones
+                    doc.setDrawColor(255, 107, 53);
+                    doc.setLineWidth(0.5);
+                    doc.rect(margin, yPos, pageWidth - (margin * 2), obsHeight, 'S');
+                    doc.setFillColor(255, 245, 240);
+                    doc.rect(margin, yPos, pageWidth - (margin * 2), 6, 'F');
+                    doc.setFontSize(8);
+                    doc.setTextColor(255, 107, 53);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('VII. OBSERVACIONES', margin + 3, yPos + 4);
+                    yPos += 6;
+                    // Label "Notas"
+                    doc.setFontSize(7.5);
+                    doc.setTextColor(80, 40, 20);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Notas:', margin + 4, yPos + 3.5);
+                    // Texto de observaciones
+                    doc.setFont(undefined, 'normal');
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(obsWrapped, margin + 18, yPos + 3.5, { maxWidth: maxWidth });
+                    yPos += obsWrapped.length * 5 + 2;
                 }
 
                 // ============= PIE DE PÁGINA ELEGANTE =============
